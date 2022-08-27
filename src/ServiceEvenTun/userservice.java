@@ -6,7 +6,6 @@
 package ServiceEvenTun;
 
 import GestionUser.user;
-import GuiUser.login;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,14 +43,14 @@ public class userservice implements service<user>{
 
     public void adduser(user u) throws SQLException {
      
-             pst = cnx.prepareStatement("insert into user (name, login, pwd, telephone,email, role) values(?,?,?,?,?,?)");
+             pst = cnx.prepareStatement("insert into user ( login, pwd, telephone,email, role) values(?,?,?,?,?,?)");
             
             
             pst.setString(1, u.getEmail());
             pst.setString(2, u.getLogin());
             pst.setString(3, u.getPwd());
-            pst.setInt(4, u.getTelf());
-            pst.setString(5, u.getName());
+            pst.setInt(4, u.gettelephone());
+           
             pst.setString(6, u.getRole());
            
             
@@ -69,8 +68,8 @@ public class userservice implements service<user>{
             ste = cnx.createStatement();
             rs = ste.executeQuery(requete);
             while (rs.next()) {
-                user u = new user(rs.getInt(3), rs.getString(2), rs.getString(1), rs.getInt(4));
-                list.add(u);
+//                user u = new user(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getInt(6));
+//                list.add(u);
             }
             
         } catch (SQLException ex) {
