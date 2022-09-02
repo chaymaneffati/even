@@ -5,7 +5,7 @@
  */
 package GuiUser;
 
-import GestionUser.user;
+import GestionUser.User;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +26,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
-import util.DataSource;
+import UtilData.DataSource;
+import java.io.IOException;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javax.swing.JOptionPane;
+import service.userservice;
 
 /**
  * FXML Controller class
@@ -44,56 +54,57 @@ public class GestionUtilisateuradminController implements Initializable {
     private ResultSet rs;
 
     @FXML
-    private TableView<user> table;
+    private TableView<User> table;
     @FXML
-    private TableColumn<user, Integer> tab_id;
+    private TableColumn<User, Integer> tab_id;
     @FXML
-    private TableColumn<user, String> tab_login;
+    private TableColumn<User, String> tab_login;
     @FXML
-    private TableColumn<user, String> tab_pwd;
+    private TableColumn<User, String> tab_pwd;
     @FXML
-    private TableColumn<user, Integer> tab_telf;
+    private TableColumn<User, Integer> tab_telf;
     @FXML
-    private TableColumn<user, String> tab_email;
+    private TableColumn<User, String> tab_email;
     @FXML
-    private TableColumn<user, String> tab_role;
+    private TableColumn<User, String> tab_role;
     @FXML
-    private TableColumn<user, String> action;
+    private TableColumn<User, String> action;
 
-    //private user u1;
+
+    //private User u1;
     public GestionUtilisateuradminController() {
 
-        cnx = DataSource.getInstance().getConnection();
+        cnx = DataSource.getConnection();
     }
 
-    ObservableList<user> obs = FXCollections.observableArrayList();
-
+    ObservableList<User> obs = FXCollections.observableArrayList();
+   
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadDate();
+      
     }
 
-    
     public void Display() {
         obs.clear();
         String requete = "select * from user";
-            
-try {
+
+        try {
             ste = cnx.prepareStatement(requete);
 
             rs = ste.executeQuery(requete);
 
             while (rs.next()) {
-                user u = new user(rs.getInt("id"), rs.getString("login"), rs.getString("pwd"), rs.getInt("telephone"), rs.getString("email"), rs.getString("role"));
+                User u = new User(rs.getInt("id"), rs.getString("login"), rs.getString("pwd"), rs.getInt("Telephone"), rs.getString("email"), rs.getString("role"));
                 obs.add(u);
             }
         } catch (SQLException ex) {
             Logger.getLogger(GestionUtilisateuradminController.class.getName()).log(Level.SEVERE, null, ex);
-      }
+        }
         tab_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         tab_login.setCellValueFactory(new PropertyValueFactory<>("login"));
         tab_pwd.setCellValueFactory(new PropertyValueFactory<>("pwd"));
-        tab_telf.setCellValueFactory(new PropertyValueFactory<>("telephone"));
+        tab_telf.setCellValueFactory(new PropertyValueFactory<>("Telephone"));
         tab_email.setCellValueFactory(new PropertyValueFactory<>("email"));
         tab_role.setCellValueFactory(new PropertyValueFactory<>("role"));
 
@@ -106,13 +117,13 @@ try {
         tab_id.setCellValueFactory(new PropertyValueFactory<>("id"));
         tab_login.setCellValueFactory(new PropertyValueFactory<>("login"));
         tab_pwd.setCellValueFactory(new PropertyValueFactory<>("pwd"));
-        tab_telf.setCellValueFactory(new PropertyValueFactory<>("telephone"));
+        tab_telf.setCellValueFactory(new PropertyValueFactory<>("Telephone"));
         tab_email.setCellValueFactory(new PropertyValueFactory<>("email"));
         tab_role.setCellValueFactory(new PropertyValueFactory<>("role"));
         Display();
-        Callback<TableColumn<user, String>, TableCell<user, String>> cellFoctory = (TableColumn<user, String> param) -> {
+        Callback<TableColumn<User, String>, TableCell<User, String>> cellFoctory = (TableColumn<User, String> param) -> {
             // make cell containing button
-            final TableCell<user, String> cell = new TableCell<user, String>() {
+            final TableCell<User, String> cell = new TableCell<User, String>() {
                 @Override
                 public void updateItem(String item, boolean empty) {
                     super.updateItem(item, empty);
@@ -135,31 +146,35 @@ try {
                                 + "-fx-border-radius:20px;"
                                 + "-fx-background-color:transparent;"
                         );
-                        
 
-                            cellRemouv.setOnAction(e -> {
-                                user selectedItem = table.getSelectionModel().getSelectedItem();
-                                //table.getItems().remove(selectedItem);
-                                try {
-                                    pst = cnx.prepareStatement("Delete from user where id=?");
-                                    ste = cnx.createStatement();
-                                    pst.setInt(1, selectedItem.getId());
-                                    pst.executeUpdate();
+                        cellRemouv.setOnAction(e -> {
+                            User selectedItem = table.getSelectionModel().getSelectedItem();
+                            //table.getItems().remove(selectedItem);
+                            try {
+                                pst = cnx.prepareStatement("Delete from user where id=?");
+                                ste = cnx.createStatement();
+                                pst.setInt(1, selectedItem.getId());
+                                pst.executeUpdate();
 
-                                } catch (SQLException ex) {
-                                    Logger.getLogger(GestionUtilisateuradminController.class.getName()).log(Level.SEVERE, null, ex);
-                                }
+                            } catch (SQLException ex) {
+                                Logger.getLogger(GestionUtilisateuradminController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
 //                                Display();
-                            });
-                        
-                        cellmodif.setOnMouseClicked((event) -> {
+                        });
 
-//                            @Override
-//                            public void handle(ActionEvent t) {
-//                                int selectedIndex = getTableRow().getIndex();
-//                                user toRemove = (user) tblView.getItems().get(selectedIndex);
-//                                // tempBoM.remove(toRemove);
-//                                // prepareBoMTable();
+                        cellmodif.setOnMouseClicked((event) -> {
+ 
+                            try {
+                                Parent pane = FXMLLoader.load(getClass().getResource("Updateuser.fxml"));
+
+                                Scene scene = new Scene(pane);
+                                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                window.setScene(scene);
+                                window.show();
+
+                            } catch (IOException ex) {
+                                Logger.getLogger(GestionUtilisateuradminController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         });
                         HBox btn = new HBox(cellRemouv, cellmodif);
                         setGraphic(btn);
@@ -172,6 +187,10 @@ try {
             return cell;
         };
         action.setCellFactory(cellFoctory);
-       table.setItems(obs);
+        table.setItems(obs);
     }
+    
+  
+    
+
 }

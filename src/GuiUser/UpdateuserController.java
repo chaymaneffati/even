@@ -5,6 +5,8 @@
  */
 package GuiUser;
 
+import GestionUser.User;
+import UtilData.DataSource;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,58 +26,61 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javax.swing.JOptionPane;
 import service.userservice;
-import UtilData.DataSource;
+
 
 /**
  * FXML Controller class
  *
+ * 
  * @author panda
  */
-public class SignUpController implements Initializable {
+public class UpdateuserController implements Initializable {
     private Connection cnx;
+
     private Statement ste;
     private PreparedStatement pst;
     private ResultSet rs;
     
-    public SignUpController() {
-         cnx = DataSource.getConnection();
-    }
-    
-    ObservableList<String> RoleBoxList = FXCollections.observableArrayList("User","event Manager","advertising manager");
-
-   @FXML
-    private Button btnsignup;
+     @FXML
+    private Button btnback;
 
     @FXML
-    private ComboBox<String> comborole;
-    
+    private Button btnmodifier;
+
+    @FXML
+    private ComboBox<String> cmbrole;
+
     @FXML
     private TextField txtemail;
-    
-    @FXML
-    private TextField txtpwd;
 
     @FXML
     private TextField txtlogin;
 
-    
+    @FXML
+    private TextField txtpwd;
 
     @FXML
     private TextField txttelf;
+   // private User u;
     
-  
-    
-    
+    public UpdateuserController() {
+          cnx = DataSource.getConnection();
+    }
+        ObservableList<String> RoleBoxList = FXCollections.observableArrayList("User","event Manager","advertising manager");
 
-    @FXML
-    void select(ActionEvent event) throws SQLException {
-       try{ 
+    /**
+     * Initializes the controller class.
+     */
+      public void update(ActionEvent event) throws SQLException{
+          
+        try{ 
+        User u = new User();
         String email=txtemail.getText();
         String login=txtlogin.getText();
         String telephone = txttelf.getText();
         String password = txtpwd.getText();
-        String role=comborole.getSelectionModel().getSelectedItem();
-        
+        String role= cmbrole.getSelectionModel().getSelectedItem();
+        // id =u.getId();
         if (email.equals("") || login.equals("") || telephone.equals("") || role.equals("Choose your role") || password.equals(""))
             
               JOptionPane.showMessageDialog(null,"please complete all the fills");
@@ -87,51 +92,32 @@ public class SignUpController implements Initializable {
                }
         else {
                  
-         
-           pst = cnx.prepareStatement("select * from user where login=? ");
-           ste = cnx.createStatement();
-           pst.setString(1, login );
-           rs = pst.executeQuery();
            
-            if(rs.next()){
-                 JOptionPane.showMessageDialog(null,"Username already taken, please try another username");
-             } 
-        
-        
+
+           pst = cnx.prepareStatement("UPDATE user set   `login` = " +"'"+u.getLogin()+"'" +", `pwd` = " +"'"+ u.getPwd()+"'" +", `telephone` = "+"'"+u.getTelephone()+"'"+", `email` = "+"'"+u.getEmail()+"'"+", `role` = "+"'"+u.getRole()+"'"+" WHERE id_produit = "+u.getId() );
+             
+             u.setLogin(login);
+             u.setPwd(password);
+             u.setTelephone((Integer.parseInt(telephone)));
+             u.setEmail(email);
+          //   u.setId(id);
+             pst.executeUpdate();
       
-        else{  
-         
-             pst = cnx.prepareStatement("insert into user ( login, pwd, telephone,email, role) values(?,?,?,?,?)");
-          
-            pst.setString(1, txtlogin.getText().trim());
-            pst.setString(2, txtpwd.getText().trim());
-            pst.setString(3, txttelf.getText().trim());
-            pst.setString(4, txtemail.getText().trim());
-            pst.setString(5, comborole.getSelectionModel().getSelectedItem());
-           
-            
-            pst.execute();
-            
-            JOptionPane.showMessageDialog(null,"Account successfully registered");
+            JOptionPane.showMessageDialog(null,"Account successfully updated");
          
         }
         
-    }}}
-     catch (SQLException ex) {
+    }} catch (SQLException ex) {
             Logger.getLogger(userservice.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    @Override
     
-    public void initialize(URL location, ResourceBundle resources) {
-        
-    /**
-     * Initializes the controller class.
-     */
-    comborole.setValue("Choose your role");
-    comborole.setItems(RoleBoxList);    
     }
-}
    
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        // TODO
+    cmbrole.setValue("Choose your role");
+    cmbrole.setItems(RoleBoxList); 
+    }    
     
-
+}

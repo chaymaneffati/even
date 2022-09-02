@@ -12,25 +12,25 @@ import java.util.Objects;
  *
  * @author panda
  */
-public class user {
+public class User {
     private int id;
     private String login;
     private String pwd;
-    private int telephone;
+    private int Telephone;
     private String email;
     private String role;
 
     
     
 
-    public user() {
+    public User() {
     }
 
-    public user(int id, String login, String pwd, int telephone, String email, String role) {
+    public User(int id, String login, String pwd, int Telephone, String email, String role) {
         this.id = id;
         this.login = login;
         this.pwd = pwd;
-        this.telephone = telephone;
+        this.Telephone = Telephone;
         this.email=email;
         this.role = role;
        
@@ -72,12 +72,12 @@ public class user {
         this.pwd = pwd;
     }
 
-    public int gettelephone() {
-        return telephone;
+    public int getTelephone() {
+        return Telephone;
     }
 
-    public void settelephone(int telephone) {
-        this.telephone = telephone;
+    public void setTelephone(int Telephone) {
+        this.Telephone = Telephone;
     }
 
     public String getRole() {
@@ -107,7 +107,7 @@ public class user {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final user other = (user) obj;
+        final User other = (User) obj;
         if (this.id != other.id) {
             return false;
         }
@@ -119,7 +119,7 @@ public class user {
 
     @Override
     public String toString() {
-        return "user{" + "id=" + id + ", login=" + login + ", pwd=" + pwd + ", telephone=" + telephone + ", email=" + email +  ", role=" + role + '}';
+        return "user{" + "id=" + id + ", login=" + login + ", pwd=" + pwd + ", Telephone=" + Telephone + ", email=" + email +  ", role=" + role + '}';
     }
     
 

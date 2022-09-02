@@ -22,10 +22,13 @@ import javax.swing.JOptionPane;
 import UtilData.DataSource;
 
 import gestionutilisateur.user;
+import java.awt.event.MouseEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
@@ -35,11 +38,11 @@ import javafx.stage.Stage;
  * @author panda
  */
 public class ForgetpwdController implements Initializable {
-    
-      @FXML
+
+    @FXML
     private Label labelemail;
-    
-     @FXML
+
+    @FXML
     private Button btnback;
 
     @FXML
@@ -62,96 +65,86 @@ public class ForgetpwdController implements Initializable {
     private PreparedStatement pst;
     private ResultSet rs;
     private user u;
-    
-    
+    private int id;
+
     public ForgetpwdController() {
-        cnx = DataSource.getInstance().getConnection();
+        cnx = DataSource.getConnection();
     }
- @FXML
+
+    @FXML
     void search(ActionEvent event) throws IOException, SQLException {
-       try{
-            String name = txtnom.getText().trim();
-            
-            if(name.isEmpty()){
-               
+        try {
+            String login = txtnom.getText().trim();
+
+            if (login.isEmpty()) {
+
                 JOptionPane.showMessageDialog(null, "S'il vous plaît entrer votre nom");
-            }
-            else {
-                 pst = cnx.prepareStatement("select login,email from user where login=?");
-                 ste = cnx.createStatement();
-                 pst.setString(1, name );
-        
-                 rs = pst.executeQuery();
-              
-                if(rs.next()){
-                
-                Parent view4=FXMLLoader.load(getClass().getResource("forgetpwd2.fxml"));
-                Scene scene4=new Scene(view4);
-                Stage window =(Stage)((Node)event.getSource()).getScene().getWindow();
-                window.setScene(scene4);
-                window.show();
-                   
-                    
-                    
-                 
+            } else {
+                pst = cnx.prepareStatement("select login from user where login=?");
+                ste = cnx.createStatement();
+                pst.setString(1, login);
+
+                rs = pst.executeQuery();
+
+                if (rs.next()) {
+
+                    Parent view4 = FXMLLoader.load(getClass().getResource("forgetpwd2.fxml"));
+                    Scene scene4 = new Scene(view4);
+                    Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    window.setScene(scene4);
+                    window.show();
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error: nom  incorrect");
+                    txtnom.setText("");
+                    txtrep.setText("");
+                    txtmdp.setText("");
+                    txtnom.requestFocus();
+
                 }
-                else {
-                    JOptionPane.showMessageDialog(null,"Error: nom  incorrect");
-                     txtnom.setText("");
-                     txtrep.setText("");
-                     txtmdp.setText("");
-                     txtnom.requestFocus();
-            
-                }
-                
-                
-                
+
             }
-            
+
         } catch (Exception ex) {
             System.out.println(ex);
-        } 
-            
+        }
+
     }
 
- @FXML
-    void retrivePsw(ActionEvent event) throws IOException, SQLException {
-try{
-        String login = txtnom.getText();
-        String pwd = txtmdp.getText();
-        String pwd1 = txtrep.getText();
-      
-        
-             if(!pwd1.equals(pwd)){
-                 
-                JOptionPane.showMessageDialog(null, "Veuillez vérifier votre saisie dans les deux champs ");}
-                
-              else {
-                
-                pst = cnx.prepareStatement("update user set pwd=? where login=? " );
-                ste = cnx.createStatement();
-                pst.setString(3, pwd );
-                pst.setString(2, login );
-                pst.executeUpdate();
-                while (rs.next()) {
-                JOptionPane.showMessageDialog(null, "le mot de passe a  été modifier");}
-                   
+    @FXML
+    void retrivePsw(ActionEvent event) throws SQLException {
+//try{
+        // String login = txtnom.getText().trim();
+        String pwd = txtmdp.getText().trim();
+        String pwd1 = txtrep.getText().trim();
+        //String login = setlogin(login);
+        if ((pwd.isEmpty()) || (pwd1.isEmpty())) {
 
-            
-        } }catch (Exception ex) {
-            ex.printStackTrace();
-        
-            
-}
+            JOptionPane.showMessageDialog(null, "S'il vous plaît remplir les champs vides ");
+
+        } else if (!(pwd).equals(pwd1)) {
+            JOptionPane.showMessageDialog(null, "Mot de passe incorrect veuillez verifier les deux champs  ");
+
+        } else {
+           
+            pst = cnx.prepareStatement("update user set pwd = ? where login = ?");
+
+            pst.setString(1, txtmdp.getText().trim());
+            pst.setString(2, txtnom.getText().trim());
+
+            pst.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "la nouveau mot de passe a changé avec succée");
+
+        }
+
     }
-    
 
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+    public void initialize(URL url, ResourceBundle rb) { // TODO
+    }
+
 }
