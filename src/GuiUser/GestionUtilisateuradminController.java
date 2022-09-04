@@ -70,7 +70,6 @@ public class GestionUtilisateuradminController implements Initializable {
     @FXML
     private TableColumn<User, String> action;
 
-
     //private User u1;
     public GestionUtilisateuradminController() {
 
@@ -78,11 +77,11 @@ public class GestionUtilisateuradminController implements Initializable {
     }
 
     ObservableList<User> obs = FXCollections.observableArrayList();
-   
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         loadDate();
-      
+
     }
 
     public void Display() {
@@ -163,18 +162,37 @@ public class GestionUtilisateuradminController implements Initializable {
                         });
 
                         cellmodif.setOnMouseClicked((event) -> {
- 
+//                            try {
+//                                 User u = getTableView().getItems().get(getIndex());
+//
+//                                
+//                                Parent pane = FXMLLoader.load(getClass().getResource("Updateuser.fxml"));
+//                                
+//                                Scene scene = new Scene(pane);
+//                                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//                                window.setScene(scene);
+//                                window.show();
+//                            } catch (IOException ex) {
+//                                Logger.getLogger(GestionUtilisateuradminController.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
+                            User u = table.getSelectionModel().getSelectedItem();
+                            FXMLLoader loader = new FXMLLoader();
+                            loader.setLocation(getClass().getResource("Updateuser.fxml"));
+                  
                             try {
-                                Parent pane = FXMLLoader.load(getClass().getResource("Updateuser.fxml"));
-
-                                Scene scene = new Scene(pane);
-                                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                                window.setScene(scene);
-                                window.show();
-
+                                loader.load();
+//                                sc.modifierCommentaire(c);
                             } catch (IOException ex) {
-                                Logger.getLogger(GestionUtilisateuradminController.class.getName()).log(Level.SEVERE, null, ex);
+                                System.out.println(ex);
                             }
+                            UpdateuserController updateuser = loader.getController();
+                           
+                            updateuser.setTextField(u.getId(), u.getLogin() ,u.getPwd(), u.getTelephone(), u.getEmail(), u.getRole());
+                            Parent parent = loader.getRoot();
+                            Stage stage = new Stage();
+                            stage.setScene(new Scene(parent));
+                            stage.show();
+
                         });
                         HBox btn = new HBox(cellRemouv, cellmodif);
                         setGraphic(btn);
@@ -189,8 +207,5 @@ public class GestionUtilisateuradminController implements Initializable {
         action.setCellFactory(cellFoctory);
         table.setItems(obs);
     }
-    
-  
-    
 
 }

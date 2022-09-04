@@ -5,6 +5,7 @@
  */
 package GuiUser;
 
+import GestionUser.User;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -65,7 +66,7 @@ public class ForgetpwdController implements Initializable {
     private PreparedStatement pst;
     private ResultSet rs;
     private user u;
-    private int id;
+    private int idu;
 
     public ForgetpwdController() {
         cnx = DataSource.getConnection();
@@ -113,6 +114,8 @@ public class ForgetpwdController implements Initializable {
 
     @FXML
     void retrivePsw(ActionEvent event) throws SQLException {
+         User u = new User();
+         u.setId(idu);
 //try{
         // String login = txtnom.getText().trim();
         String pwd = txtmdp.getText().trim();
@@ -127,13 +130,12 @@ public class ForgetpwdController implements Initializable {
 
         } else {
            
-            pst = cnx.prepareStatement("update user set pwd = ? where login = ?");
-
-            pst.setString(1, txtmdp.getText().trim());
-            pst.setString(2, txtnom.getText().trim());
-
-            pst.executeUpdate();
-
+            pst = cnx.prepareStatement("UPDATE user set `pwd` = " +"'"+pwd +"'"+" WHERE id = "+u.getId() );
+             
+             
+             pst.executeUpdate();
+      
+      
             JOptionPane.showMessageDialog(null, "la nouveau mot de passe a changé avec succée");
 
         }

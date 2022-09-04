@@ -62,7 +62,7 @@ public class UpdateuserController implements Initializable {
     @FXML
     private TextField txttelf;
    // private User u;
-    
+     private int idu;
     public UpdateuserController() {
           cnx = DataSource.getConnection();
     }
@@ -71,22 +71,50 @@ public class UpdateuserController implements Initializable {
     /**
      * Initializes the controller class.
      */
+//       public ObservableList<User> getRegisteredList() throws SQLException {
+//        String sql = "SELECT * FROM user";
+//        ObservableList<User> list=FXCollections.observableArrayList();
+//        list.clear();
+//        try {
+//           
+//            Statement stmt = cnx.createStatement();
+//            ResultSet rs = stmt.executeQuery(sql);
+//            while (rs.next()) {
+//                User u=new User(rs.getInt("id"),rs.getString("login"),rs.getString("pwd"));
+//                list.add(p);
+//            }
+//            rs.close();
+//            cnx.close();
+//        } 
+//        catch (ClassNotFoundException | SQLException ex) {
+//        }
+//        System.out.print(list.size());
+//        return list;
+//   }
       public void update(ActionEvent event) throws SQLException{
           
         try{ 
         User u = new User();
-        String email=txtemail.getText();
-        String login=txtlogin.getText();
-        String telephone = txttelf.getText();
-        String password = txtpwd.getText();
-        String role= cmbrole.getSelectionModel().getSelectedItem();
-        // id =u.getId();
-        if (email.equals("") || login.equals("") || telephone.equals("") || role.equals("Choose your role") || password.equals(""))
+//        String email=txtemail.getText();
+//        String login=txtlogin.getText();
+          //String telephone = txttelf.getText();
+//        String password = txtpwd.getText();
+//        String role= cmbrole.getSelectionModel().getSelectedItem();
+//        Integer id =u.getId();
+
+            u.setId(idu);
+            u.setLogin(txtlogin.getText());
+             u.setEmail(txtemail.getText()); 
+             u.setPwd(txtpwd.getText()); 
+             u.setTelephone(Integer.parseInt(txttelf.getText())); 
+             u.setRole(cmbrole.getSelectionModel().getSelectedItem());
+
+        if (cmbrole.getSelectionModel().getSelectedItem().equals("Choose your role") || txtpwd.getText().equals("") || txtemail.getText().equals("") || txtlogin.getText().equals("") || Integer.parseInt(txttelf.getText())==0)
             
               JOptionPane.showMessageDialog(null,"please complete all the fills");
         
          else {
-               if (telephone.length()<8){
+               if (Integer.parseInt(txttelf.getText())<8){
                   
                    JOptionPane.showMessageDialog(null,"telephone  is too weak, please choose 8 characters");
                }
@@ -94,13 +122,9 @@ public class UpdateuserController implements Initializable {
                  
            
 
-           pst = cnx.prepareStatement("UPDATE user set   `login` = " +"'"+u.getLogin()+"'" +", `pwd` = " +"'"+ u.getPwd()+"'" +", `telephone` = "+"'"+u.getTelephone()+"'"+", `email` = "+"'"+u.getEmail()+"'"+", `role` = "+"'"+u.getRole()+"'"+" WHERE id_produit = "+u.getId() );
+           pst = cnx.prepareStatement("UPDATE user set   `login` = " +"'"+u.getLogin()+"'" +", `pwd` = " +"'"+ u.getPwd()+"'" +", `telephone` = "+"'"+u.getTelephone()+"'"+", `email` = "+"'"+u.getEmail()+"'"+", `role` = "+"'"+u.getRole()+"'"+" WHERE id = "+u.getId() );
              
-             u.setLogin(login);
-             u.setPwd(password);
-             u.setTelephone((Integer.parseInt(telephone)));
-             u.setEmail(email);
-          //   u.setId(id);
+             
              pst.executeUpdate();
       
             JOptionPane.showMessageDialog(null,"Account successfully updated");
@@ -112,7 +136,19 @@ public class UpdateuserController implements Initializable {
         }
     
     }
-   
+       
+   void setTextField(int id, String login ,String pwd , int Telephone, String email, String role) {
+        idu = id;
+        
+        txtlogin.setText(login);
+        txtpwd.setText(pwd);
+        txttelf.setText(String.valueOf(Telephone));
+        txtemail.setText(email);
+        cmbrole.setValue(role);
+        
+        
+
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
