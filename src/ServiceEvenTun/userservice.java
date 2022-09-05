@@ -5,7 +5,11 @@
  */
 package ServiceEvenTun;
 
+<<<<<<< HEAD
 import GestionUser.User;
+=======
+import GestionUser.user;
+>>>>>>> master
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +20,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import service.service;
 import UtilData.DataSource;
+<<<<<<< HEAD
 import javax.swing.JOptionPane;
+=======
+>>>>>>> master
 
 /**
  *
@@ -77,7 +84,7 @@ public class userservice implements service<User>{
         }
         return list;
     }
-
+   
 //    @Override
    public void add(User p) {
 //        String requete = "insert into personne (nom,prenom,age) values('" + u.ge + "','" + p.getPrenom() + "'," + p.getAge() + ")";
