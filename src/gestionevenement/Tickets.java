@@ -9,17 +9,17 @@ package gestionevenement;
  * @author SALIM
  */
 public class Tickets {
-    private int idT ;
-    protected int numero ;
-    public float prix ;
+    protected int idT ;
+   
+    protected float prix ;
     protected int promotion ;
 
     public Tickets() {
     }
 
-    public Tickets(int idT, int numero, float prix, int promotion) {
+    public Tickets(int idT,  float prix, int promotion) {
         this.idT = idT;
-        this.numero = numero;
+        
         this.prix = prix;
         this.promotion = promotion;
     }
@@ -32,13 +32,6 @@ public class Tickets {
         this.idT = idT;
     }
 
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
 
     public float getPrix() {
         return prix;
@@ -58,7 +51,7 @@ public class Tickets {
 
     @Override
     public String toString() {
-        return "Tickets{" + "id=" + idT + ", numero=" + numero + ", prix=" + prix + ", promotion=" + promotion + '}';
+        return "Tickets{" + "id=" + idT + ",  prix=" + prix + ", promotion=" + promotion + '}';
     }
     
     

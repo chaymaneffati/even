@@ -9,6 +9,7 @@ import ServiceEvenTun.userservice;
 import UtilData.DataSource;
 import com.sun.java.swing.plaf.windows.resources.windows;
 import gestionevenement.Tickets;
+import gestionevenement.evenement;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -20,6 +21,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import static java.util.Collections.list;
+import java.util.List;
 import java.util.Observable;
 import java.util.Optional;
 import java.util.Random;
@@ -65,7 +67,7 @@ import org.controlsfx.control.Notifications;
  */
 public class PromographicController implements Initializable {
 
-    private ObservableList<Tickets> proTable;
+    private ObservableList<Float> proTable;
     @FXML
     private TextField numeroCarte;
    @FXML
@@ -81,10 +83,12 @@ public class PromographicController implements Initializable {
   
     @FXML
     private Button pay , promoBtn;
-    @FXML
-    private TableView<Tickets> table ;
-       @FXML
-    private TableColumn<Tickets, Float> montant ;
+//    @FXML
+//    private TableView<Tickets> table ;
+//       @FXML
+//    private TableColumn<Tickets, Tickets> montant ;
+       
+       
        private Stage stage ;
        private Scene scene;
        private Parent root;
@@ -99,6 +103,10 @@ public class PromographicController implements Initializable {
     private ToggleGroup visamar;
     @FXML
     private ImageView ballon;
+    @FXML
+    private Button backbtn;
+    @FXML
+    private Label prise;
     
     
     @FXML
@@ -149,6 +157,8 @@ public class PromographicController implements Initializable {
          }else {
              exdate.setStyle(null);
          }
+         
+         
          if ((numeroCarte.getText().length()!=0)&&(codeS.getText().length()!=0)&&(postal.getText().length()!=0)){
              Parent root = FXMLLoader.load(getClass().getResource("ImprimeTikets.fxml"));
                 stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -163,70 +173,55 @@ public class PromographicController implements Initializable {
 //        }else exdate.setStyle(null);
 
           }
-   
+   private List<Tickets> list;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        remplirTab();
+       // remplirTab();
+        
        // remplirTabPromo();
       // calculepromo();
-    }    
-    
-        public void remplirTab() {
+       // Tickets t = new Tickets();
         PromotionService ps = new PromotionService();
-        ArrayList<Tickets> list = ps.getTickets();
-
-        ObservableList<Tickets> obs = FXCollections.observableArrayList(list);
+        list = new ArrayList<>(ps.getTickets());
+//        ps.getTickets();
         
-        montant.setCellValueFactory(new PropertyValueFactory<>("prix"));
+        for(Tickets tic : list){
+            String pr = String.valueOf(tic.getPrix());
+             prise.setText(pr);
+        }
+        
+        
+       
        
         
-        table.setItems(obs);
+    }  
+    
+//    public void setPrise (Tickets t){
+//        String pr = String.valueOf(t.getPrix());
+//        prise.setText(pr);
+//    }
+    
+    
+//        public void remplirTab() {
+//        PromotionService ps = new PromotionService();
+//        
+//        //ArrayList<Tickets> list = ps.getTickets();
+//        ArrayList<Tickets> list = ps.getTickets();
+//        ObservableList<Tickets> obs = FXCollections.observableArrayList(list);
+//        
+//        montant.setCellValueFactory(new PropertyValueFactory<>("prix"));
+//           
+//        
+//        table.setItems(obs);
+//            System.out.println(obs);
 
-    }
+    //}
        
         
     @FXML
-        public float calculepromo () throws IOException{
-           float min = 0.7f;
-           float max = 0.99f;
-                Random rand = new Random();
-            float finalprix ;
-            //float nb;
-          // nb =  Math.random();
-          //(float)Math.floor
-            // nb = (Math.random()*(max-min+1)+min);
-           // nb = rand.nextFloat();
-           float nb = min + rand.nextFloat()*(max-min);
-            PromotionService serv = new PromotionService();
-             finalprix = serv.getprixV()* nb ;
-             System.out.println(nb);
-             System.out.println((float)finalprix);
-             listP.add(finalprix);
-            
-             Alert alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Information Dialog");
-                alert.setHeaderText(null);
-                alert.setContentText("votre offre est "+finalprix);
-                ButtonType buttonTypeOne = new ButtonType("OK");
-                alert.getButtonTypes().setAll(buttonTypeOne);
-                Optional<ButtonType> result = alert.showAndWait();
-                int st = 0;
-                String reqt =" UPDATE tickets SET promotion ="+ finalprix ;
-            try{
-            ste= cnx.createStatement();
-           st = ste.executeUpdate(reqt);
-           
-            }catch(SQLException ex) {
-               Logger.getLogger(userservice.class.getName()).log(Level.SEVERE, null, ex);}
-                
-                //windows wind = new windows();
-               
-                //alert.showAndWait();
-//               ObservableList<Float> obs1 = FXCollections.observableArrayList(listP);
-//                System.out.println(obs1);
-//               prfinal.setCellValueFactory(new PropertyValueFactory<>("prix"));
-//               finalTable.setItems(obs1);
-             return finalprix;
+        public float calculepromo () {
+            PromotionService ps = new PromotionService();
+          return ps.getpromotion();
         }
            public void finalPage (ActionEvent event) throws IOException{
                 Parent root = FXMLLoader.load(getClass().getResource("testButtom.fxml"));
@@ -307,5 +302,14 @@ public class PromographicController implements Initializable {
              });
             notificatee.showConfirm();
         }
+    }
+
+    @FXML
+    private void back(ActionEvent event) throws IOException {
+        Parent root=FXMLLoader.load(getClass().getResource("Acceuil.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
     }
 }

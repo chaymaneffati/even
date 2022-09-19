@@ -34,21 +34,20 @@ public class TestButtomController implements Initializable {
      private Stage stage ;
        private Scene scene;
        private Parent root;
+       protected float ticket;
     
     public void achatTick () throws IOException{
         Parent root=FXMLLoader.load(getClass().getResource("promographic.fxml"));
          
-//                stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-//                scene= new Scene(root);
-//                stage.setScene(scene);
-//                stage.show();
+              
          
         Stage window = (Stage)acheter.getScene().getWindow();
         window.setScene(new Scene(root ,1000,750));
          PromotionService ps = new PromotionService();
             ArrayList<Tickets> list = ps.getTickets();
+                      //  ticket = ps.getTickets();
             ObservableList<Tickets> obs =FXCollections.observableArrayList(list);
-            System.out.println(obs);
+            //System.out.println("hello"+obs);
            // System.out.println(obs.get(3));
             
     }

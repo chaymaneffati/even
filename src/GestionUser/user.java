@@ -7,33 +7,83 @@ package GestionUser;
 
 import java.util.Objects;
 
+
 /**
  *
  * @author panda
  */
-public class user {
+public class User {
     private int id;
     private String login;
-    private String email;
+     private String Nom;
+      private String Prenom;
     private String pwd;
-    private int telf;
+    private int Telephone;
+    private String email;
     private String role;
 
-    public user() {
+    
+    
+
+    public User() {
     }
 
-    public user(int id, String login, String email, String pwd, int telf, String role) {
+    public User(int id,String Nom,String Prenom,  String login, String pwd, int Telephone, String email, String role) {
         this.id = id;
+        this.Nom=Nom;
+        this.Prenom=Prenom;
         this.login = login;
-        this.email = email;
         this.pwd = pwd;
-        this.telf = telf;
+        this.Telephone = Telephone;
+        this.email=email;
+        this.role = role;
+       
+        
+    }
+
+    public User(String login) {
+        this.login = login;
+    }
+
+    public User(String Nom,String Prenom,String login, String pwd, int Telephone, String email, String role) {
+      this.Nom=Nom;
+      this.Prenom=Prenom;
+        this.login = login;
+        this.pwd = pwd;
+        this.Telephone = Telephone;
+        this.email = email;
         this.role = role;
     }
 
-    public user(int aInt, String string, String string0, int aInt0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public User(String login, String pwd) {
+        this.login = login;
+        this.pwd = pwd;
     }
+
+    public String getNom() {
+        return Nom;
+    }
+
+    public void setNom(String Nom) {
+        this.Nom = Nom;
+    }
+
+    public String getPrenom() {
+        return Prenom;
+    }
+
+    public void setPrenom(String Prenom) {
+        this.Prenom = Prenom;
+    }
+
+    
+
+   
+
+  
+
+    
+
 
     public int getId() {
         return id;
@@ -67,12 +117,12 @@ public class user {
         this.pwd = pwd;
     }
 
-    public int getTelf() {
-        return telf;
+    public int getTelephone() {
+        return Telephone;
     }
 
-    public void setTelf(int telf) {
-        this.telf = telf;
+    public void setTelephone(int Telephone) {
+        this.Telephone = Telephone;
     }
 
     public String getRole() {
@@ -83,9 +133,11 @@ public class user {
         this.role = role;
     }
 
+    
+
     @Override
     public int hashCode() {
-        int hash = 7;
+        int hash = 3;
         return hash;
     }
 
@@ -100,11 +152,11 @@ public class user {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final user other = (user) obj;
+        final User other = (User) obj;
         if (this.id != other.id) {
             return false;
         }
-        if (!Objects.equals(this.role, other.role)) {
+        if (!Objects.equals(this.login, other.login)) {
             return false;
         }
         return true;
@@ -112,9 +164,8 @@ public class user {
 
     @Override
     public String toString() {
-        return "user{" + "id=" + id + ", login=" + login + ", email=" + email + ", pwd=" + pwd + ", telf=" + telf + ", role=" + role + '}';
+        return "user{" + "id=" + id + ", Nom=" + Nom + ", Prenom=" + Prenom + ", login=" + login + ", pwd=" + pwd + ", Telephone=" + Telephone + ", email=" + email +  ", role=" + role + '}';
     }
     
-    
-    
+
 }

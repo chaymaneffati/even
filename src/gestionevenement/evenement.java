@@ -14,16 +14,26 @@ public class evenement {
     protected String lieu;
     protected String dateevent;
     protected String description;
+    protected String imagesrc;
 
-    public evenement(int idE, String nom, String lieu, String dateevent, String description) {
+    public evenement(int idE, String nom, String lieu, String dateevent, String description, String imagesrc) {
         this.idE = idE;
         this.nom = nom;
         this.lieu = lieu;
         this.dateevent = dateevent;
         this.description = description;
+        this.imagesrc =  imagesrc;
     }
 
     public evenement() {
+    }
+
+    public String getImagesrc() {
+        return imagesrc;
+    }
+
+    public void setImagesrc(String imagesrc) {
+        this.imagesrc = imagesrc;
     }
 
     public int getIdE() {

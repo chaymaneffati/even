@@ -6,13 +6,18 @@ package ServiceEvenTun;
 
 import UtilData.DataSource;
 import gestionevenement.Tickets;
+import gestionevenement.evenement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Optional;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 
 public class PromotionService implements service<Tickets>{
@@ -28,15 +33,22 @@ public class PromotionService implements service<Tickets>{
     
    
  
-    public ArrayList <Tickets> getTickets (){
+    public ArrayList<Tickets> getTickets (){
+//        evenement ev = new evenement();
+//        int IDE = ev.getIdE();
          ArrayList<Tickets> list = new ArrayList<>();
+        //float ticket = 0;
          try{
-        String requete ="select * from tickets ";
+        String requete ="SELECT * FROM tickets where idE = idT ";
+        //as T inner join evenement as E ON T.idE = E.idE WHERE T.idE = " + 2
          ste = cnx.createStatement();
             rs = ste.executeQuery(requete);
             while (rs.next()) {
-                Tickets  ticket = new Tickets (rs.getInt("idT"), rs.getInt("numero"), rs.getFloat("prix"), rs.getInt("promotion"));
+               // ticket = rs.getFloat("prix");
+               // System.out.println(ticket);
+               Tickets  ticket = new Tickets (rs.getInt("idT"), rs.getFloat("prix"), rs.getInt("promotion"));
                 list.add(ticket);
+                //System.out.println(list);
             }
          }catch (SQLException ex) {
             Logger.getLogger(userservice.class.getName()).log(Level.SEVERE, null, ex);
@@ -45,7 +57,8 @@ public class PromotionService implements service<Tickets>{
     }
      public float getprixV (){
         float prixx = 0;
-        String rqt="select prix from tickets ";
+        String rqt="SELECT prix FROM tickets as T inner join evenement as E ON T.idE = E.idE WHERE T.idE = E.idE ";
+        //;
         try{
         ste= cnx.createStatement();
         res = ste.executeQuery(rqt);
@@ -58,6 +71,51 @@ public class PromotionService implements service<Tickets>{
         return prixx;
     }
      
+     
+     public float getpromotion(){
+          ArrayList<Float> listP = new ArrayList<>();
+              float min = 0.7f;
+           float max = 0.99f;
+                Random rand = new Random();
+            float finalprix ;
+            //float nb;
+          // nb =  Math.random();
+          //(float)Math.floor
+            // nb = (Math.random()*(max-min+1)+min);
+           // nb = rand.nextFloat();
+           float nb = min + rand.nextFloat()*(max-min);
+            PromotionService serv = new PromotionService();
+             finalprix = serv.getprixV()* nb ;
+             System.out.println(nb);
+             System.out.println((float)finalprix);
+             listP.add(finalprix);
+            
+             Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("votre offre est "+finalprix);
+                ButtonType buttonTypeOne = new ButtonType("OK");
+                alert.getButtonTypes().setAll(buttonTypeOne);
+                Optional<ButtonType> result = alert.showAndWait();
+                int st = 0;
+                String reqt =" UPDATE tickets  SET promotion ="+ finalprix +"where idE = idT" ;
+            try{
+            ste= cnx.createStatement();
+           st = ste.executeUpdate(reqt);
+           
+            }catch(SQLException ex) {
+               Logger.getLogger(userservice.class.getName()).log(Level.SEVERE, null, ex);}
+                
+                //windows wind = new windows();
+               
+                //alert.showAndWait();
+//               ObservableList<Float> obs1 = FXCollections.observableArrayList(listP);
+//                System.out.println(obs1);
+//               prfinal.setCellValueFactory(new PropertyValueFactory<>("prix"));
+//               finalTable.setItems(obs1);
+             return finalprix;
+     }
+     
  
      //update 
 //     public void update(){
@@ -66,15 +124,7 @@ public class PromotionService implements service<Tickets>{
 //    public void addPrix (double finalprix ){
 //        listP.add(finalprix);
 //    }
-    @Override
-    public void add(Tickets t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void delete(Tickets t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+ 
 
    
 
@@ -83,13 +133,10 @@ public class PromotionService implements service<Tickets>{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    @Override
-    public void update(Tickets t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+  
 
     @Override
-    public void readById(int id) {
+    public void readByIdPromo(int id) {
      String sq1= "select id , prix from tickets where id="+id;
         try {
             ste = cnx.createStatement();
@@ -127,5 +174,65 @@ public class PromotionService implements service<Tickets>{
          
              System.out.println(prommo);
         }return prommo;
+    }
+
+    @Override
+    public void adduser(Tickets u) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void addpub(Tickets t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean forgetpass(Tickets t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void deleteuser(Tickets t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void deletepub(Tickets t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean readById(Tickets t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void readByLogin(Tickets t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void login(Tickets t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void updatepass(Tickets t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void upuser(Tickets t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void updatepub(Tickets t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void readByIdpromo(int t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
