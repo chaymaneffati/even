@@ -13,7 +13,6 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,10 +35,12 @@ import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import GestionPublicite.Publicite;
 import ServiceEvenTun.PubService;
+import java.text.MessageFormat;
 import javafx.collections.ObservableList;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
+import javax.swing.*;
 
 public class TableViewController implements Initializable {
 
@@ -67,9 +68,13 @@ public class TableViewController implements Initializable {
     PreparedStatement preparedStatement = null;
     ResultSet resultSet = null;
     Publicite publicite= new Publicite();
+   
+    private JTable.PrintMode PrintMode;
+    
 
     PubService ps = new PubService();
     ObservableList<Publicite> PubliciteList = FXCollections.observableArrayList();
+    private Object primaryStage;
 
     /**
      * Initializes the controller class.
@@ -119,30 +124,21 @@ public class TableViewController implements Initializable {
 
     @FXML
     private void print(MouseEvent event) {
-        /* btnPrint.setVisible(false);
-        MouseEvent root = null;
-        print(root); */
- /*  ObservableSet<Printer> printers = Printer.getAllPrinters();
- 
-for(Printer printer : printers) 
-{
-    textArea.appendText(printer.getName()+"\n");
-} */
-
+        /*MessageFormat header=new MessageFormat("liste des pubicite:"); 
+        MessageFormat footer = new MessageFormat("page{0,number,integer}");
+        try{
+            publicitesTable.print(publicitesTable.PrintMode.NORMAL,header,footer);
+        }catch(java.awt.print.PrinterException e){
+            System.err.format("Erreur d'impression",e.getMessage());
+        }
+        */
+      /*PrinterJob printerJob = PrinterJob.createPrinterJob();
+   if(printerJob.showPrintDialog(primaryStage.getOwner()) && printerJob.printPage(publicitesTable))
+       printerJob.endJob();
+*/
     }
 
-    /*  private void print(Node node) {
-        PrinterJob job = PrinterJob.createPrinterJob();
-        if (job != null && job.showPrintDialog(node.getScene().getWindow())){
-            boolean success = job.printPage(node);
-            if (success) {
-                job.endJob();
-            }
-        }
-        btnPrint.setVisible(true);
-    }  
-      
-     */
+   
     private void loadDate() {
 
         refreshTable();
@@ -233,5 +229,7 @@ for(Printer printer : printers)
         publicitesTable.setItems(ps.readAll());
 
     }
+
+   
 
 }
