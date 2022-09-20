@@ -5,12 +5,14 @@
  */
 package GuiUser;
 
-
-<<<<<<< HEAD
-=======
-
-import com.cathive.fonts.fontawesome.FontAwesomeIconView;
->>>>>>> master
+//
+//<<<<<<< HEAD
+//=======
+//
+//import com.cathive.fonts.fontawesome.FontAwesomeIconView;
+//>>>>>>> master
+import GestionUser.User;
+import ServiceEvenTun.userservice;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,51 +20,53 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-<<<<<<< HEAD
-import javax.swing.JOptionPane;
-import service.userservice;
-import UtilData.DataSource;
-=======
-import javafx.scene.layout.AnchorPane;
-import javax.swing.JOptionPane;
-import service.userservice;
-import util.DataSource;
->>>>>>> master
 
+import UtilData.DataSource;
+import java.io.IOException;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Hyperlink;
+import javafx.stage.Stage;
+//=======
+
+import javax.swing.JOptionPane;
+
+//import util.DataSource;
+//>>>>>>> master
 /**
  * FXML Controller class
  *
  * @author chayma
  */
 public class LogininterfaceController implements Initializable {
-<<<<<<< HEAD
-   private Connection cnx;
+//<<<<<<< HEAD
+
+    private Connection cnx;
     private Statement ste;
     private PreparedStatement pst;
     private ResultSet rs;
-=======
->>>>>>> master
+//=======
+//>>>>>>> master
 
     /**
      * Initializes the controller class.
      */
-<<<<<<< HEAD
+//<<<<<<< HEAD
     public LogininterfaceController() {
-         cnx = DataSource.getConnection();
+        cnx = DataSource.getConnection();
     }
 
-    
-=======
->>>>>>> master
-      @FXML
+//=======
+//>>>>>>> master
+    @FXML
     private Button btnlogin;
 
     @FXML
@@ -70,103 +74,88 @@ public class LogininterfaceController implements Initializable {
 
     @FXML
     private TextField txtusername;
-<<<<<<< HEAD
+    @FXML
+    private Hyperlink btnsignup;
 
     @FXML
-    void login(ActionEvent event) throws SQLException {
-=======
-    private Connection cnx;
-    private Statement ste;
-    private PreparedStatement pst;
-    private ResultSet rs;
-    private AnchorPane HboxR;
+    private Hyperlink btnrest;
+         Parent root = null;
 
-    public LogininterfaceController() {
-        cnx = DataSource.getInstance().getConnection();
+        FXMLLoader fxmlLoader = null;
+//<<<<<<< HEAD
+
+    @FXML
+    void rest(ActionEvent event) throws IOException {
+
+        if (event.getSource() == btnrest) {
+
+            Parent root = FXMLLoader.load(getClass().getResource("forgetpwd.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+
+        }
     }
-    
+
     @FXML
-    void login(ActionEvent event) {
->>>>>>> master
-        
-        String username=txtusername.getText();
-        String password=txtpassword.getText();
-        
-<<<<<<< HEAD
+    void Signup(ActionEvent event) throws IOException {
+
+        if (event.getSource() == btnsignup) {
+
+            Parent root = FXMLLoader.load(getClass().getResource("SignUp.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+
+        }
+    }
+
+    @FXML
+    void login(ActionEvent event) throws SQLException, IOException {
+
+        String username = txtusername.getText();
+        String password = txtpassword.getText();
+
+//<<<<<<< HEAD
+
         if (username.equals("") && password.equals("")) {
-            
-               JOptionPane.showMessageDialog(null, "Username or password is empty");
-            }
-        else
-         {
-           try{
-             
-          
-         
-           pst = cnx.prepareStatement("select * from user where login=? and pwd=?");
-           ste = cnx.createStatement();
-           pst.setString(1, username );
-           pst.setString(2, password);
-           rs = pst.executeQuery();
-            if (rs.next()) {
-             JOptionPane.showMessageDialog(null, "login success");
-            
-            }
-            else{
-                
-             JOptionPane.showMessageDialog(null, "login Failed");
-             txtusername.setText("");
-             txtpassword.setText("");
-             txtusername.requestFocus();
-            
-            }
-  } catch (SQLException ex) {
-            Logger.getLogger(userservice.class.getName()).log(Level.SEVERE, null, ex);
-        }
-            }
-=======
-     
-            if (username.isEmpty()&&password.isEmpty()) {
-            
-               JOptionPane.showMessageDialog(null, "Username or password is empty");
-            }
-            else
-            {
-             
-        try {
-             String requete = "select * from user where login=? and pwd=?";
 
-             pst = cnx.prepareStatement(requete);
-           
-             pst.setString(1, username);
-             pst.setString(2, password);
-             rs= pst.executeQuery();
-            
-            if (rs.next()) {
-               JOptionPane.showMessageDialog(null, "Login succes");
+            JOptionPane.showMessageDialog(null, "nom ou mot de passe est vide!!");
+
+        } else {
+            if (("admin".equals(username))&&("admin".equals(password))){
+            Parent root = FXMLLoader.load(getClass().getResource("Home.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(scene);
+            window.show();
             }
-            else 
-            {
-               JOptionPane.showMessageDialog(null, "Login failed");
-               txtusername.setText("");
-               txtpassword.setText("");
-               txtusername.requestFocus();
-            }
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(userservice.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        else {
+
+            User u = new User(username, password);
        
-            } 
->>>>>>> master
-    }
+            userservice u1 = new userservice();
+            u1.login(u);
+           
+        }
+ 
+
+    }}
+
+         
+     
+
+//=======
+//>>>>>>> master
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-<<<<<<< HEAD
-=======
-        
->>>>>>> master
-    }    
-    
+//<<<<<<< HEAD
+//=======
+//        
+//>>>>>>> master
+    }
+
 }
