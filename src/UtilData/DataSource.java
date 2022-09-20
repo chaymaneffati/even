@@ -13,14 +13,13 @@ public class DataSource {
 
 	private static Connection con = null;
 	static {
-		String url = "jdbc:mysql://localhost:3306/eventun?useSSL=false";
+		String url = "jdbc:mysql://localhost:3306/eventun";
 		String user = "root";
 		String pass = "";
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			con = DriverManager.getConnection(url, user, pass);
 		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
 		}
 	}
 
