@@ -37,11 +37,13 @@ public class ClientConsultController implements Initializable {
 
     @FXML
     private GridPane eventconsult;
-private List<evenement> list;
-    private VBox hbbox;
-    private List<evenement> listeven ;
+   
     @FXML
     private Button btnlogin;
+    
+    private List<evenement> list;
+    private VBox hbbox;
+    private List<evenement> listeven ;
     
     
     @Override

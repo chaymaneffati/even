@@ -133,7 +133,7 @@ public class userservice implements service<User> {
 //login selon role d'utilisateur
     private void switchrole(String role) throws IOException {
 
-        switch (role) {
+        switch (role)  {
 
             case "Utilisateur":
 
@@ -145,6 +145,7 @@ public class userservice implements service<User> {
                 stage.show();
                 stage.setTitle("user");
                 stage.setFullScreen(false);
+              
                 break;
 
             case "Responsable Evenement":
@@ -156,6 +157,7 @@ public class userservice implements service<User> {
                 stage2.show();
                 stage2.setTitle("RE");
                 stage2.setFullScreen(false);
+                
                 break;
 
             case "Responsable Publicité":
@@ -167,6 +169,7 @@ public class userservice implements service<User> {
                 stage3.show();
                 stage3.setTitle("RP");
                 stage3.setFullScreen(false);
+                
                 break;
 
         }

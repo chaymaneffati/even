@@ -40,6 +40,7 @@ public class AcceuilController implements Initializable {
     
     @FXML
     private GridPane eventcontanair;
+    //les liste pour l'affichage
     private List<evenement> list;
     private List<evenement> listeven ;
    
@@ -79,7 +80,6 @@ public class AcceuilController implements Initializable {
                 e.printStackTrace();
         }
         
-       // MenuButton M = new MenuButton();
     }
     
     

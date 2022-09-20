@@ -66,10 +66,7 @@ public class CardconsultController implements Initializable {
           Parent root=FXMLLoader.load(getClass().getResource("../GuiUser/logininterface.fxml"));      
         Stage window = (Stage)btncons.getScene().getWindow();
         window.setScene(new Scene(root ,1000,750));
-//         PromotionService ps = new PromotionService();
-           
-//        float ticket = ps.getTickets();
-//            ObservableList<Float> obs =FXCollections.observableArrayList(ticket);
+
     }
     
 }

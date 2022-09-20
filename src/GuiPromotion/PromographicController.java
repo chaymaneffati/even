@@ -70,7 +70,7 @@ public class PromographicController implements Initializable {
     private ObservableList<Float> proTable;
     @FXML
     private TextField numeroCarte;
-   @FXML
+    @FXML
     private DatePicker exdate = new DatePicker();
     @FXML
     private TextField codeS;
@@ -80,9 +80,16 @@ public class PromographicController implements Initializable {
     private Label   error1 ,error2;
     @FXML
     private RadioButton tn , visa;
-  
     @FXML
     private Button pay , promoBtn;
+    @FXML
+    private ToggleGroup visamar;
+    @FXML
+    private ImageView ballon;
+    @FXML
+    private Button backbtn;
+    @FXML
+    private Label prise;
 //    @FXML
 //    private TableView<Tickets> table ;
 //       @FXML
@@ -92,58 +99,36 @@ public class PromographicController implements Initializable {
        private Stage stage ;
        private Scene scene;
        private Parent root;
-        private Connection cnx  = DataSource.getInstance().getConnection();
+       private Connection cnx  = DataSource.getInstance().getConnection();
         
-    private Statement ste;
-    private ResultSet rs,res;
-    int carte ;
-    int codee;
+       private Statement ste;
+       private ResultSet rs,res;
+       int carte ;
+       int codee;
     ArrayList<Float> listP = new ArrayList<>();
-    @FXML
-    private ToggleGroup visamar;
-    @FXML
-    private ImageView ballon;
-    @FXML
-    private Button backbtn;
-    @FXML
-    private Label prise;
+   
     
     
     @FXML
     private void payementickets (ActionEvent event) throws ParseException, IOException{
-//        try{
-//      carte = Integer.parseInt(numeroCarte.getText());
-//        }catch (NumberFormatException e){
-//            error1.setText("must be number");
-//        }
-          
-       
-      
-//        carte=Integer.parseInt(numeroCarte.getText());
+ 
+    
         if ((numeroCarte.getText().length()==0) ){
-//             try{
-//      carte = Integer.parseInt(numeroCarte.getText());
-//        }catch (NumberFormatException e){
-//            error1.setText("must be number");
-//        }
+
             numeroCarte.setStyle("-fx-border-color: red ; -fx-border-width: 2px;");
             new animatefx.animation.Shake(numeroCarte).play();
             
         }else numeroCarte.setStyle(null);
         
         
-     if (codeS.getText().length()==0){
-//           try{
-//      codee = Integer.parseInt(codeS.getText());
-//        }catch (NumberFormatException e){
-//            error2.setText("must be number");
-//        }
-           
+        if (codeS.getText().length()==0){
+
             codeS.setStyle("-fx-border-color: red ; -fx-border-width: 2px;");
             new animatefx.animation.Shake(codeS).play();
             
         }else codeS.setStyle(null);
-     if (postal.getText().length()==0){
+        
+        if (postal.getText().length()==0){
             postal.setStyle("-fx-border-color: red ; -fx-border-width: 2px;");
             new animatefx.animation.Shake(postal).play();
             
@@ -166,24 +151,16 @@ public class PromographicController implements Initializable {
                 stage.setScene(scene);
                 stage.show();
          }
-//      if (exdate.getValue().toString()== ""){
-//            exdate.setStyle("-fx-border-color: red ; -fx-border-width: 2px;");
-//            new animatefx.animation.Shake(exdate).play();
-//            
-//        }else exdate.setStyle(null);
+
 
           }
-   private List<Tickets> list;
+        private List<Tickets> list;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-       // remplirTab();
-        
-       // remplirTabPromo();
-      // calculepromo();
-       // Tickets t = new Tickets();
+    
         PromotionService ps = new PromotionService();
         list = new ArrayList<>(ps.getTickets());
-//        ps.getTickets();
+
         
         for(Tickets tic : list){
             String pr = String.valueOf(tic.getPrix());
@@ -196,26 +173,7 @@ public class PromographicController implements Initializable {
         
     }  
     
-//    public void setPrise (Tickets t){
-//        String pr = String.valueOf(t.getPrix());
-//        prise.setText(pr);
-//    }
-    
-    
-//        public void remplirTab() {
-//        PromotionService ps = new PromotionService();
-//        
-//        //ArrayList<Tickets> list = ps.getTickets();
-//        ArrayList<Tickets> list = ps.getTickets();
-//        ObservableList<Tickets> obs = FXCollections.observableArrayList(list);
-//        
-//        montant.setCellValueFactory(new PropertyValueFactory<>("prix"));
-//           
-//        
-//        table.setItems(obs);
-//            System.out.println(obs);
 
-    //}
        
         
     @FXML
@@ -230,29 +188,8 @@ public class PromographicController implements Initializable {
                 stage.setScene(scene);
                 stage.show();
            }         
-//           public void remplirTabPromo (){
-//               // PromotionService ps1 = new PromotionService();
-//             //  ArrayList<Double> listP = ps1.addPrix(finalprix);
-//               
-//             
-//           }
-//    public void getpromo(ActionEvent event){
-//        
-//     Tickets prixlist = new Tickets();
-//       PromotionService ps = new PromotionService();
-//      ArrayList<Tickets> prixList = ps.getTickets();
-//      //for (int i =0 ; i<table.getItems().size();i++){
-//        // ticket=table.getItems().get(i);
-//        // arrList.add(new ArrayList<>());
-//         //float prixv = ticket.prix;
-//         //String pr = String.valueOf(prixv);
-//         //String pr = prixv.toString();
-//         //arrList.get(i).add(ticket.prix.get());
-//         ObservableList<Tickets> obs = FXCollections.observableArrayList(arrList);
-//         prf.setCellValueFactory(new PropertyValueFactory<>("prix"));
-//         finaltable.setItems(obs);
-//     // }
-//    }
+
+
 
     @FXML
     private void checkinput(KeyEvent event) {

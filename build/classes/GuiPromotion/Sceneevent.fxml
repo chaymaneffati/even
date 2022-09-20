@@ -108,9 +108,6 @@
                         <String fx:value="selected" />
                      </styleClass>
                   </HBox>
-                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved" stylesheets="@Acceuil.css" />
-                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0" spacing="15.0" styleClass="mouse-moved" stylesheets="@Acceuil.css" />
-                  <HBox alignment="CENTER" prefHeight="54.0" prefWidth="301.0" spacing="15.0" styleClass="mouse-moved" stylesheets="@Acceuil.css" />
                </children>
             </VBox>
             <Separator prefWidth="200.0" />

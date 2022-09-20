@@ -158,7 +158,7 @@ public class ScenepubController implements Initializable {
 
     @FXML
     private void addpub(MouseEvent event) throws IOException {
-          Parent root = FXMLLoader.load(getClass().getResource("Acceuil.fxml"));
+          Parent root = FXMLLoader.load(getClass().getResource("../GuiPublicite/AddPublicite.fxml"));
                 
             Scene scene = new Scene(root);
             Stage stage = new Stage();  

@@ -46,7 +46,8 @@ public class CardController implements Initializable {
     private Label descparty;
     @FXML
     private Button btnachat;
-     protected float ticket;
+    
+    protected float ticket;
    
 
     /**

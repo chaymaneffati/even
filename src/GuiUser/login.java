@@ -39,6 +39,7 @@ public class login extends Application {
         primaryStage.setTitle("");
         primaryStage.setScene(scene);
         primaryStage.show();
+        
     }
    
 

@@ -22,7 +22,7 @@
                   <Font name="Bodoni MT" size="33.0" />
                </font>
             </Label>
-            <Label fx:id="prix" text="prix : 30 dt" />
+            <Label fx:id="prix" text="prix : 25 dt" />
             <Label fx:id="lieu" text="Cartage festifal " textFill="#720707">
                <font>
                   <Font size="24.0" />

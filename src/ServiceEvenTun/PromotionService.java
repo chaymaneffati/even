@@ -39,7 +39,7 @@ public class PromotionService implements service<Tickets>{
          ArrayList<Tickets> list = new ArrayList<>();
         //float ticket = 0;
          try{
-        String requete ="SELECT * FROM tickets where idE = idT ";
+        String requete ="SELECT * FROM tickets as T inner join evenement as E ON T.idE = E.idE where E.idE = T.idT ";
         //as T inner join evenement as E ON T.idE = E.idE WHERE T.idE = " + 2
          ste = cnx.createStatement();
             rs = ste.executeQuery(requete);
