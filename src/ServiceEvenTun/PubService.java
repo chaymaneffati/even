@@ -158,14 +158,4 @@ public class PubService implements service<Publicite> {
             Logger.getLogger(userservice.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    @Override
-    public void readByIdpromo(int t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void readByLogin(Publicite t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

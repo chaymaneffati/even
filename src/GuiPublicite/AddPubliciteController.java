@@ -10,10 +10,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -25,10 +22,8 @@ import java.io.File;
 import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
+import javafx.scene.image.ImageView;
 
 
 public class AddPubliciteController implements Initializable {
@@ -42,6 +37,9 @@ public class AddPubliciteController implements Initializable {
     @FXML
     private TextField typeFld;
     
+    @FXML
+    private ImageView imageView;
+    
     private Connection cnx;
     private Statement ste;
     private PreparedStatement pst;
@@ -50,7 +48,14 @@ public class AddPubliciteController implements Initializable {
     private boolean update;
     int publiciteID;
      Publicite p =new Publicite();
-        PubService pi = new PubService();
+     PubService pi = new PubService();
+    private Object fileChooser;
+    private File f;
+ 
+
+ 
+
+   
 
     /**
      * Initializes the controller class.
@@ -63,16 +68,25 @@ public class AddPubliciteController implements Initializable {
     
     
     @FXML
-    void choose(ActionEvent event) {
-       JFileChooser chooser=new JFileChooser();
+   private void choose(ActionEvent event) {
+  
+ JFileChooser chooser=new JFileChooser();
 chooser.showOpenDialog(null);
+
 File f = chooser.getSelectedFile();
 String fileName=f.getAbsolutePath();
 imgFld.setText(fileName);
 Image getAbsolutePath=null;
-ImageIcon icon=new ImageIcon(fileName);
+/*Image image=new Image();    
+imageView.setImage(image);
+ImageIcon icon=new ImageIcon(fileName);*/
 
-}
+
+
+         
+    }
+
+
 
     public AddPubliciteController() {
         
@@ -81,8 +95,8 @@ ImageIcon icon=new ImageIcon(fileName);
 
     
     
-    
-    
+     
+ 
     
     
     @FXML
@@ -146,4 +160,5 @@ ImageIcon icon=new ImageIcon(fileName);
 
     }
 
+  
 }

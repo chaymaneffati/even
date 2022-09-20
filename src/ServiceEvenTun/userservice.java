@@ -15,15 +15,8 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import UtilData.DataSource;
-import java.io.IOException;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import javax.swing.JOptionPane;
 
@@ -42,24 +35,21 @@ public class userservice implements service<User> {
     private Statement ste;
     private PreparedStatement pst;
     private ResultSet rs;
-   
 
     public userservice() {
         cnx = DataSource.getConnection();
     }
-//ajouter utilisateur
+
     @Override
     public void adduser(User u) {
 
         try {
-            pst = cnx.prepareStatement("insert into user (Nom,Prenom, login, pwd, telephone,email, role) values(?,?,?,?,?,?,?)");
-            pst.setString(1, u.getNom());
-            pst.setString(2, u.getPrenom());
-            pst.setString(3, u.getLogin());
-            pst.setString(4, u.getPwd());
-            pst.setInt(5, u.getTelephone());
-            pst.setString(6, u.getEmail());
-            pst.setString(7, u.getRole());
+            pst = cnx.prepareStatement("insert into user ( login, pwd, telephone,email, role) values(?,?,?,?,?)");
+            pst.setString(1, u.getLogin());
+            pst.setString(2, u.getPwd());
+            pst.setInt(3, u.getTelephone());
+            pst.setString(4, u.getEmail());
+            pst.setString(5, u.getRole());
 
             pst.execute();
         } catch (SQLException ex) {
@@ -69,10 +59,11 @@ public class userservice implements service<User> {
         JOptionPane.showMessageDialog(null, "Account successfully registered");
 
     }
-//afficher touts les utilisteurs
+
+
     @Override
-    public List<User> readAll() {
-        List<User> list = new ArrayList<>();
+    public ObservableList<User> readAll() {
+        ObservableList<User> list =FXCollections.observableArrayList();
         try {
             String requete = "select * from user";
 
@@ -81,16 +72,17 @@ public class userservice implements service<User> {
 
             while (rs.next()) {
                 User u = new User();
-                u.setId(rs.getInt(1));
-                u.setNom(rs.getString(2));
-                u.setPrenom(rs.getString(3));
-                u.setLogin(rs.getString(4));
-                u.setPwd(rs.getString(5));
-                u.setTelephone(rs.getInt(6));
-                u.setEmail(rs.getString(7));
-                u.setRole(rs.getString(8));
-                list.add(u);
-  
+                 u.setId(rs.getInt(1));
+                  u.setLogin(rs.getString(2));
+                  u.setPwd(rs.getString(3));
+                   u.setTelephone(rs.getInt(4));
+                    u.setEmail(rs.getString(5));
+                     u.setRole(rs.getString(6));
+               list.add(u);
+                //rs.getInt("id"), rs.getString("login"), rs.getString("pwd"), rs.getInt("Telephone"), rs.getString("email"), rs.getString("role"));
+//
+//                list.add(u);
+
             }
 
         } catch (SQLException ex) {
@@ -98,7 +90,7 @@ public class userservice implements service<User> {
         }
         return list;
     }
-//supprimer utilisateur selon id
+
     @Override
     public void deleteuser(User t) {
 
@@ -112,7 +104,7 @@ public class userservice implements service<User> {
             Logger.getLogger(userservice.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-//verifier le nom d'utilisateur
+
     @Override
     public boolean readById(User u) {
         try {
@@ -131,77 +123,29 @@ public class userservice implements service<User> {
         }
         return false;
     }
-//login selon role d'utilisateur
-    private void switchrole(String role) throws IOException {
 
-        switch (role) {
-
-            case "Utilisateur":
-
-                Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("GuiPromotion/Acceuil.fxml"));
-
-                Scene scene = new Scene(root);
-                Stage stage = new Stage();
-                stage.setScene(scene);
-                stage.show();
-                stage.setTitle("Admin");
-                stage.setFullScreen(false);
-                break;
-
-            case "Responsable Evenement":
-                Parent root2 = FXMLLoader.load(getClass().getClassLoader().getResource("GuiPromotion/Acceuil_1.fxml"));
-
-                Scene scene2 = new Scene(root2);
-                Stage stage2 = new Stage();
-                stage2.setScene(scene2);
-                stage2.show();
-                stage2.setTitle("Hospital-IT");
-                stage2.setFullScreen(false);
-                break;
-
-            case "Responsable Publicité":
-                Parent root3 = FXMLLoader.load(getClass().getClassLoader().getResource("GuiPromotion/Acceuil_2.fxml"));
-
-                Scene scene3 = new Scene(root3);
-                Stage stage3 = new Stage();
-                stage3.setScene(scene3);
-                stage3.show();
-                stage3.setTitle("QuarantineCenter-IT");
-                stage3.setFullScreen(false);
-                break;
-
-        }
-    }
-//login
     @Override
     public void login(User u) {
 
         try {
-            pst = cnx.prepareStatement("select login,pwd,role from user where login=? and pwd=?");
+            pst = cnx.prepareStatement("select * from user where login=? and pwd=?");
             ste = cnx.createStatement();
             pst.setString(1, u.getLogin());
             pst.setString(2, u.getPwd());
             rs = pst.executeQuery();
             if (rs.next()) {
                 JOptionPane.showMessageDialog(null, "login success");
-                String username = rs.getString(1);
-                String password = rs.getString(2);
-                String role = rs.getString(3);
-                System.out.println(username + password + role);
-                switchrole(role);
 
             } else {
 
                 JOptionPane.showMessageDialog(null, "login Failed");
-
             }
+
         } catch (SQLException ex) {
-            Logger.getLogger(userservice.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
             Logger.getLogger(userservice.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-// chercher login dans la base de données
+
     @Override
     public boolean forgetpass(User t) {
 
@@ -224,7 +168,7 @@ public class userservice implements service<User> {
         }
         return false;
     }
-//modifier mot de passe
+
     @Override
     public void updatepass(User t) {
         try {
@@ -237,12 +181,12 @@ public class userservice implements service<User> {
 
         JOptionPane.showMessageDialog(null, "la nouveau mot de passe a changé avec succée");
     }
-//modifier utilisateur
+
     @Override
     public void upuser(User u) {
 
         try {
-            pst = cnx.prepareStatement("UPDATE user set  `Nom` = " + "'" + u.getNom() + "'" + ",`Prenom` = " + "'" + u.getPrenom() + "'" + ", `login` = " + "'" + u.getLogin() + "'" + ", `pwd` = " + "'" + u.getPwd() + "'" + ", `telephone` = " + "'" + u.getTelephone() + "'" + ", `email` = " + "'" + u.getEmail() + "'" + ", `role` = " + "'" + u.getRole() + "'" + " WHERE id = " + u.getId());
+            pst = cnx.prepareStatement("UPDATE user set   `login` = " + "'" + u.getLogin() + "'" + ", `pwd` = " + "'" + u.getPwd() + "'" + ", `telephone` = " + "'" + u.getTelephone() + "'" + ", `email` = " + "'" + u.getEmail() + "'" + ", `role` = " + "'" + u.getRole() + "'" + " WHERE id = " + u.getId());
             pst.executeUpdate();
 
             JOptionPane.showMessageDialog(null, "Account successfully updated");
@@ -252,6 +196,19 @@ public class userservice implements service<User> {
 
     }
 
+//      @Override
+//    public void sendmail(User u) {
+//
+//        try {
+//            pst = cnx.prepareStatement("UPDATE user set  `email` = " + "'" + u.getEmail() + "'" +  " WHERE id = " + u.getId());
+//            pst.executeUpdate();
+//
+//            JOptionPane.showMessageDialog(null, " send Email  successfully ");
+//        } catch (SQLException ex) {
+//            Logger.getLogger(userservice.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//
+//    }
 
     @Override
     public void addpub(User t) {
@@ -266,23 +223,6 @@ public class userservice implements service<User> {
     @Override
     public void deletepub(User t) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void readByIdpromo(int t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void readByLogin(User t) {
-        try {
-            pst = cnx.prepareStatement("select * from user where login=? ");
-            ste = cnx.createStatement();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(userservice.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
 }

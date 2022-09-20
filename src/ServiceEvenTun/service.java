@@ -6,16 +6,14 @@
 package ServiceEvenTun;
 
 
-import java.io.IOException;
-import java.util.List;
-
+import javafx.collections.ObservableList;
 
 /**
  *
  * @author panda
  */
 public interface service<T> {
-//void switchrole(String role) throws IOException;
+
     void adduser(T u);
 
     void addpub(T t);
@@ -26,9 +24,8 @@ public interface service<T> {
     void deletepub(T t);
 
     boolean readById(T t);
-     void readByLogin(T t);
 
-    List<T> readAll();
+    ObservableList<T> readAll();
 
     void login(T t);
 
@@ -37,5 +34,5 @@ public interface service<T> {
     void upuser(T t);
 
     void  updatepub(T t);
- void readByIdpromo (int t);
+
 }
